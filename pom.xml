@@ -21,7 +21,7 @@
         <docker.image.prefix>esgi</docker.image.prefix>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
         <jbcrypt.version>0.4</jbcrypt.version>
-        <sonar.organization>hlimam</sonar.organization>
+        <sonar.organization>projet-annuel-4</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
