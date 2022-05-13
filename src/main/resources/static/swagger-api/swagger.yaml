@@ -1,0 +1,685 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: "projet-annuel-4"
+servers:
+  - url: "http://localhost:8082"
+
+tags:
+  - name: "AdminController"
+  - name: "AuthenticationController"
+  - name: "UserController"
+
+paths:
+  /api/v1/admin/add:
+    post:
+      tags:
+        - "AdminController"
+      summary: "Add perfume to database"
+      operationId: "addPerfume"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                perfumeTitle:
+                  type: string
+                perfumer:
+                  type: string
+                year:
+                  type: string
+                country:
+                  type: string
+                perfumeGender:
+                  type: string
+                fragranceTopNotes:
+                  type: string
+                fragranceMiddleNotes:
+                  type: string
+                fragranceBaseNotes:
+                  type: string
+                description:
+                  type: string
+                filename:
+                  type: string
+                price:
+                  type: string
+                volume:
+                  type: string
+                type:
+                  type: string
+              required:
+                - perfumeTitle
+                - perfumer
+                - year
+                - country
+                - perfumeGender
+                - fragranceTopNotes
+                - fragranceMiddleNotes
+                - fragranceBaseNotes
+                - price
+                - volume
+                - type
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/PerfumeResponse"
+              examples:
+                PerfumeResponse:
+                  $ref: "#/components/schemas/PerfumeResponse"
+        "400":
+          description: "Bad request"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/PerfumeError"
+              examples:
+                PerfumeError:
+                  $ref: "#/components/schemas/PerfumeError"
+      security:
+        - token: []
+
+  /api/v1/admin/edit:
+    put:
+      tags:
+        - "AdminController"
+      summary: "Update perfume"
+      operationId: "updatePerfume"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                perfumeTitle:
+                  type: string
+                perfumer:
+                  type: string
+                year:
+                  type: string
+                country:
+                  type: string
+                perfumeGender:
+                  type: string
+                fragranceTopNotes:
+                  type: string
+                fragranceMiddleNotes:
+                  type: string
+                fragranceBaseNotes:
+                  type: string
+                description:
+                  type: string
+                filename:
+                  type: string
+                price:
+                  type: string
+                volume:
+                  type: string
+                type:
+                  type: string
+              required:
+                - perfumeTitle
+                - perfumer
+                - year
+                - country
+                - perfumeGender
+                - fragranceTopNotes
+                - fragranceMiddleNotes
+                - fragranceBaseNotes
+                - price
+                - volume
+                - type
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/PerfumeResponse"
+              examples:
+                PerfumeResponse:
+                  $ref: "#/components/schemas/PerfumeResponse"
+        "400":
+          description: "Bad request"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/PerfumeError"
+              examples:
+                PerfumeError:
+                  $ref: "#/components/schemas/PerfumeError"
+      security:
+        - token: []
+
+  /api/v1/admin/delete/{id}:
+    delete:
+      tags:
+        - "AdminController"
+      summary: "Delete perfume"
+      operationId: "deletePerfume"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PerfumeResponse"
+      security:
+        - token: []
+
+  /api/v1/admin/user/{id}:
+    get:
+      tags:
+        - "AdminController"
+      summary: "Get user by id"
+      operationId: "getUser"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/User"
+      security:
+        - token: []
+
+  /api/v1/admin/user/all:
+    get:
+      tags:
+        - "AdminController"
+      summary: "Get users from database"
+      operationId: "getAllUsers"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+      security:
+        - token: []
+
+  /api/v1/auth/login:
+    post:
+      tags:
+        - "AuthenticationController"
+      summary: "Login"
+      operationId: "login"
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "test123@test.com"
+                password:
+                  type: string
+                  example: "1234567890"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+        "403":
+          description: "Forbidden"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    example: "Incorrect password or email"
+
+  /api/v1/auth/forgot:
+    post:
+      tags:
+        - "AuthenticationController"
+      summary: "Send password reset code to users email"
+      operationId: "forgotPassword"
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "test123@test.com"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    example: "Reset password code is send to your E-mail"
+        "400":
+          description: "Bad Request"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    example: "Email not found"
+
+  /api/v1/auth/reset/{code}:
+    get:
+      tags:
+        - "AuthenticationController"
+      summary: "Returns user info by password reset code"
+      operationId: "getPasswordResetCode"
+      parameters:
+        - name: "code"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: "Bad Request"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    example: "Password reset code is invalid!"
+
+  /api/v1/auth/reset:
+    post:
+      tags:
+        - "AuthenticationController"
+      summary: "Reset password"
+      operationId: "passwordReset"
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: "1234567890"
+                password2:
+                  type: string
+                  example: "1234567890"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    example: "Password successfully changed!"
+        "400":
+          description: "Bad Request"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  passwordError:
+                    type: "string"
+                  password2Error:
+                    type: "string"
+              examples:
+                PasswordMatchError:
+                  summary: "Password Match Error"
+                  value:
+                    passwordError: "Passwords do not match."
+                PasswordConfirmationError:
+                  summary: "Password Confirmation Error"
+                  value:
+                    password2Error: "Password confirmation cannot be empty."
+
+  /api/v1/registration:
+    post:
+      tags:
+        - "RegistrationController"
+      summary: "Registration"
+      operationId: "registration"
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                email:
+                  type: "string"
+                  example: "test1234@test.com"
+                password:
+                  type: "string"
+                  example: "1234567890"
+                password2:
+                  type: "string"
+                  example: "1234567890"
+                firstName:
+                  type: "string"
+                  example: "John"
+                lastName:
+                  type: "string"
+                  example: "Doe"
+                captcha:
+                  type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: "string"
+                    example: "User successfully registered."
+        "400":
+          description: "Bad Request"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  passwordError:
+                    type: "string"
+                  password2Error:
+                    type: "string"
+              examples:
+                PasswordMatchError:
+                  summary: "Password Match Error"
+                  value:
+                    passwordError: "Passwords do not match."
+                EmailError:
+                  summary: "Email Error"
+                  value:
+                    emailError: "Email is already used."
+                BindingResultError:
+                  summary: "Binding Result Errors"
+                  value:
+                    captchaError: "Fill captcha."
+                    firstNameError: "First name cannot be empty"
+                    lastNameError: "Last name cannot be empty"
+                    passwordError: "The password must be between 6 and 16 characters long"
+                    password2Error: "The password confirmation must be between 6 and 16 characters long"
+                    emailError: "Incorrect email"
+
+  /api/v1/registration/activate/{code}:
+    get:
+      tags:
+        - "RegistrationController"
+      summary: "Activate email code"
+      operationId: "activateEmailCode"
+      parameters:
+        - name: "code"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: "string"
+                    example: "User successfully activated."
+        "404":
+          description: "Bad Request"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    example: "Activation code not found."
+
+  /api/v1/users/info:
+    get:
+      tags:
+        - "UserController"
+      summary: "Get authenticated user info"
+      operationId: "getUserInfo"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/User"
+      security:
+        - token: []
+
+  /api/v1/users/edit:
+    put:
+      tags:
+        - "UserController"
+      summary: "Edit authenticated user info"
+      operationId: "updateUserInfo"
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: "string"
+                  example: "John"
+                lastName:
+                  type: "string"
+                  example: "Doe"
+                city:
+                  type: "string"
+                  example: "New York"
+                address:
+                  type: "string"
+                  example: "Wall Street 1"
+                phoneNumber:
+                  type: "string"
+                  example: "123456"
+                postIndex:
+                  type: "string"
+                  example: "123456"
+              required:
+                - firstName
+                - lastName
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: "Bad Request"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  firstNameError:
+                    type: string
+                    example: "First name cannot be empty"
+                  lastNameError:
+                    type: string
+                    example: "Last name cannot be empty"
+      security:
+        - token: []
+
+  /api/v1/users/edit/password:
+    put:
+      tags:
+        - "UserController"
+      summary: "Change user password"
+      operationId: "updateUserPassword"
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                password:
+                  type: "string"
+                  example: "1234567890"
+                password2:
+                  type: "string"
+                  example: "1234567890"
+              required:
+                - password
+                - password2
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    example: "Password successfully changed!"
+        "400":
+          description: "Bad Request"
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  passwordError:
+                    type: "string"
+                  password2Error:
+                    type: "string"
+              examples:
+                BindingResultError:
+                  summary: "Binding Result Errors"
+                  value:
+                    passwordError: "The password must be between 6 and 16 characters long"
+                    password2Error: "The password confirmation must be between 6 and 16 characters long"
+                MatchPasswordError:
+                  summary: "Match Password Error"
+                  value:
+                    data: "Passwords do not match."
+      security:
+        - token: []
+
+components:
+  securitySchemes:
+    token:
+      type: apiKey
+      name: Authorization
+      in: header
+
+  schemas:
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          example: 2
+        email:
+          type: "string"
+          example: "test123@test.com"
+        firstName:
+          type: "string"
+          example: "John"
+        lastName:
+          type: "string"
+          example: "Doe"
+        city:
+          type: "string"
+          example: "New York"
+        address:
+          type: "string"
+          example: "Wall Street 1"
+        phoneNumber:
+          type: "string"
+          example: "123456"
+        postIndex:
+          type: "string"
+          example: "123456"
+        provider:
+          type: "string"
+          example: "LOCAL"
+        active:
+          type: "boolean"
+          example: true
+        activationCode:
+          type: "string"
+          example: ""
+        passwordResetCode:
+          type: "string"
+          example: ""
+        roles:
+          type: "array"
+          items:
+            type: "string"
+            example: "USER"
+
+    AuthenticationResponse:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        token:
+          type: "string"
+        userRole:
+          type: "string"
