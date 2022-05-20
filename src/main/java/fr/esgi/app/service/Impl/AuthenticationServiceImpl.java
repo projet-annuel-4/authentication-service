@@ -1,9 +1,11 @@
 package fr.esgi.app.service.Impl;
 
+import fr.esgi.app.bus.UserStream;
 import fr.esgi.app.domain.AuthProvider;
 import fr.esgi.app.domain.Role;
 import fr.esgi.app.domain.User;
 import fr.esgi.app.dto.CaptchaResponse;
+import fr.esgi.app.dto.user.UserEvent;
 import fr.esgi.app.exception.ApiRequestException;
 import fr.esgi.app.exception.EmailException;
 import fr.esgi.app.exception.PasswordConfirmationException;
@@ -13,7 +15,10 @@ import fr.esgi.app.security.JwtProvider;
 import fr.esgi.app.security.oauth2.OAuth2UserInfo;
 import fr.esgi.app.service.AuthenticationService;
 import fr.esgi.app.service.email.MailSender;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
@@ -37,6 +44,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final MailSender mailSender;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserStream userStream;
+
 
     @Value("${hostname}")
     private String hostname;
@@ -47,14 +56,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${recaptcha.url}")
     private String captchaUrl;
 
-    public AuthenticationServiceImpl(AuthenticationManager authenticationManager, RestTemplate restTemplate, JwtProvider jwtProvider, MailSender mailSender, PasswordEncoder passwordEncoder, UserRepository userRepository) {
-        this.authenticationManager = authenticationManager;
-        this.restTemplate = restTemplate;
-        this.jwtProvider = jwtProvider;
-        this.mailSender = mailSender;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public Map<String, String> login(String email, String password) {
@@ -91,8 +92,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setProvider(AuthProvider.LOCAL);
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-
+        userRepository.saveAndFlush(user);
+        //Send creation event
+        userStream.userCreated(user);
+        //send activation mail
         String subject = "Activation code";
         String template = "registration-template";
         Map<String, Object> attributes = new HashMap<>();
@@ -111,7 +114,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setProvider(AuthProvider.valueOf(provider.toUpperCase()));
-        return userRepository.save(user);
+        userRepository.saveAndFlush(user);
+        //Send creation event
+        userStream.userCreated(user);
+        return user;
     }
 
     @Override
