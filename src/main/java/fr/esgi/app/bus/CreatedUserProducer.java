@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
-public class UserStream {
-    static final String USER_CREATED_OUTPUT = "user-binding-out-0";
+@Component("createdUserProducer")
+public class CreatedUserProducer {
+    static final String USER_CREATED_OUTPUT = "createdUserProducer-out-0";
     private final StreamBridge streamBridge;
 
     public void userCreated(User user) {

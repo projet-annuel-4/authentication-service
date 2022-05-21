@@ -37,14 +37,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().and().csrf().disable().authorizeRequests()
+                .csrf().disable().authorizeRequests()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/**/api/v1/auth/**",
+                        "/**/login",
                         "/**/api/v1/auth/login",
-                        "/**/api/v1/registration",
+                        "/**/registration/**",
+                        "/**/api/v1/registration/**",
                         "/websocket", "/websocket/**",
                         "/img/**",
                         "/static/**").permitAll()
@@ -63,7 +65,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * Configuration principale du coeur d'application
      */
-    @Bean
+    /*@Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
 
@@ -79,10 +81,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         corsConfiguration.setAllowedHeaders(Collections.unmodifiableList(Collections.singletonList("*")));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
-        source.registerCorsConfiguration("/auth/api/**", corsConfiguration);
-        source.registerCorsConfiguration("/chat/api/**", corsConfiguration);
         return source;
-    }
+    }*/
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

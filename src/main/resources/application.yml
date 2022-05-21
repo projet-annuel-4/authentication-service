@@ -1,6 +1,6 @@
 server:
   port: 9100
-
+hostname: localhost:4200
 eureka:
   instance:
     prefer-ip-address: true
@@ -21,15 +21,12 @@ spring:
       discovery:
         enabled: true
         service-id: config-server
-
-      #function:
-      # defination: userCreatedOutput
     stream:
       kafka:
         binder:
-          brokers: kafka
+          brokers: "localhost:29092"
           replicationFactor: 1
       bindings:
-        user-binding-out-0:
+        createdUserProducer-out-0:
           destination: "user-created"
           content-type: application/json

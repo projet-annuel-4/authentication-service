@@ -1,11 +1,10 @@
 package fr.esgi.app.service.Impl;
 
-import fr.esgi.app.bus.UserStream;
+import fr.esgi.app.bus.CreatedUserProducer;
 import fr.esgi.app.domain.AuthProvider;
 import fr.esgi.app.domain.Role;
 import fr.esgi.app.domain.User;
 import fr.esgi.app.dto.CaptchaResponse;
-import fr.esgi.app.dto.user.UserEvent;
 import fr.esgi.app.exception.ApiRequestException;
 import fr.esgi.app.exception.EmailException;
 import fr.esgi.app.exception.PasswordConfirmationException;
@@ -18,7 +17,6 @@ import fr.esgi.app.service.email.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final MailSender mailSender;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final UserStream userStream;
+    private final CreatedUserProducer createdUserProducer;
 
 
     @Value("${hostname}")
@@ -94,7 +92,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(user);
         //Send creation event
-        userStream.userCreated(user);
+        createdUserProducer.userCreated(user);
         //send activation mail
         String subject = "Activation code";
         String template = "registration-template";
@@ -116,7 +114,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setProvider(AuthProvider.valueOf(provider.toUpperCase()));
         userRepository.saveAndFlush(user);
         //Send creation event
-        userStream.userCreated(user);
+        createdUserProducer.userCreated(user);
         return user;
     }
 
