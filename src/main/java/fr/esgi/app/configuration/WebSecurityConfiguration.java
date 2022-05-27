@@ -46,7 +46,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/**/login",
                         "/**/api/v1/auth/login",
                         "/**/registration/**",
-                        "/**/api/v1/registration/**",
+                        "/**/api/v1/auth/registration/**",
                         "/websocket", "/websocket/**",
                         "/img/**",
                         "/static/**").permitAll()
