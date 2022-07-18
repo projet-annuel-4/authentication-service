@@ -66,6 +66,11 @@ spring:
 mail:
   debug: true
 
+jwt:
+  header: Authorization
+  secret:  {JWT_SECRET}
+  expiration: 86400
+
 recaptcha:
   url: https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s
   secret: ${RECAPTCHA_SECRET}
