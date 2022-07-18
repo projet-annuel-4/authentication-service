@@ -18,11 +18,12 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/auth/login")
 public class AuthenticationController {
 
     private final AuthenticationMapper authenticationMapper;
 
-    @PostMapping("/login")
+    @PostMapping
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationMapper.login(request));
     }
