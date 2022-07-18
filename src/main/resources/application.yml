@@ -28,47 +28,47 @@ spring:
       max-file-size: 5MB
       file-size-threshold: 2MB
       enabled: true
-    datasource:
-      driver-class-name: org.postgresql.Driver
-      username: ${BDD_USERNAME}
-      password: ${BDD_PASSWORD}
-      url: jdbc:postgresql://${BDD_URL}?useSSL=false
-    jpa:
-      database-platform: org.hibernate.dialect.PostgreSQLDialect
-      generate-ddl: true
-      hibernate:
-        ddl-auto: update
-        show_sql: true
-        format_sql: true
-        use_sql_comments: false
-        type: all
-        disableConnectionTracking: true
-    mail:
-      properties:
-        mail:
-          smtp:
-            starttls:
-              enable: true
-            auth: true
-      host: smtp.gmail.com
-      username: ${MAIL_USERNAME}
-      protocol: smtps
-      password: ${MAIL_PASSWORD}
-      port: 465
-    security:
-      oauth2:
-        client:
-          registration:
-            github:
-              client-id: ${GITHUB_CLIENT_ID}
-              client-secret: ${GITHUB_CLIENT_SECRET}
-              scope: user:email,read:user
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${BDD_USERNAME}
+    password: ${BDD_PASSWORD}
+    url: jdbc:postgresql://${BDD_URL}?useSSL=false
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      show_sql: true
+      format_sql: true
+      use_sql_comments: false
+      type: all
+      disableConnectionTracking: true
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+    host: smtp.gmail.com
+    username: ${MAIL_USERNAME}
+    protocol: smtps
+    password: ${MAIL_PASSWORD}
+    port: 465
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            scope: user:email,read:user
 mail:
   debug: true
 
 jwt:
   header: Authorization
-  secret:  ${JWT_SECRET}
+  secret:  ${JWT_SECRET:BvPHGM8C0ia4uOuxxqPD5DTbWC9F9TWvPStp3pb7ARo0oK2mJ3pd3YG4lxA9i8bj6OTbadwezxgeEByY}
   expiration: 86400
 
 recaptcha:
