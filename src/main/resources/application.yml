@@ -68,7 +68,7 @@ mail:
 
 jwt:
   header: Authorization
-  secret:  {JWT_SECRET}
+  secret:  ${JWT_SECRET}
   expiration: 86400
 
 recaptcha:
