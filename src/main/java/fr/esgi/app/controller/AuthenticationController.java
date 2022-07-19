@@ -28,9 +28,9 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationMapper.login(request));
     }
 
-    @PostMapping("/forgot")
-    public ResponseEntity<String> forgotPassword(@RequestBody PasswordResetRequest passwordReset) {
-        return ResponseEntity.ok(authenticationMapper.sendPasswordResetCode(passwordReset.getEmail()));
+    @PostMapping("/forgot/{email}")
+    public ResponseEntity<String> forgotPassword(@PathVariable String email) {
+        return ResponseEntity.ok(authenticationMapper.sendPasswordResetCode(email));
     }
 
     @GetMapping("/reset/{code}")
