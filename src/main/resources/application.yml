@@ -30,9 +30,9 @@ spring:
       enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: ${BDD_USERNAME}
-    password: ${BDD_PASSWORD}
-    url: jdbc:postgresql://${BDD_URL}?useSSL=false
+    username: ${BDD_USERNAME:projet-annuel-4}
+    password: ${BDD_PASSWORD:password}
+    url: jdbc:postgresql://${BDD_URL:localhost:5432/authentication}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
@@ -51,29 +51,29 @@ spring:
             enable: true
           auth: true
     host: smtp.gmail.com
-    username: ${MAIL_USERNAME}
+    username: ${MAIL_USERNAME:annual.projects.4th@gmail.com}
     protocol: smtps
-    password: ${MAIL_PASSWORD}
+    password: ${MAIL_PASSWORD:tegmijvuymnctfwi}
     port: 465
   security:
     oauth2:
       client:
         registration:
           github:
-            client-id: ${GITHUB_CLIENT_ID}
-            client-secret: ${GITHUB_CLIENT_SECRET}
+            client-id: ${GITHUB_CLIENT_ID:65ebd3de7b3d85fa00f3}
+            client-secret: ${GITHUB_CLIENT_SECRET:f64945a0d6e6066bac38230ccca26963590dcb18}
             scope: user:email,read:user
 mail:
   debug: true
 
 jwt:
   header: Authorization
-  secret:  ${JWT_SECRET}
+  secret:  ${JWT_SECRET:BvPHGM8C0ia4uOuxxqPD5DTbWC9F9TWvPStp3pb7ARo0oK2mJ3pd3YG4lxA9i8bj6OTbadwezxgeEByY}
   expiration: 86400
 
 recaptcha:
   url: https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s
-  secret: ${RECAPTCHA_SECRET}
+  secret: ${RECAPTCHA_SECRET:6Lc5cLkZAAAAANUjd4--Jx6PioSC_N-9MFKT3PsA}
 
 logging:
   level:

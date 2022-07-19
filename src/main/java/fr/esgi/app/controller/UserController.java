@@ -21,7 +21,7 @@ public class UserController {
 
     private final UserMapper userMapper;
 
-    @GetMapping("/{email}")
+    @GetMapping("/mail/{email}")
     public ResponseEntity<UserResponse> getUserByEmail(@PathVariable String email) {
         return ResponseEntity.ok(userMapper.findUserByEmail(email));
     }

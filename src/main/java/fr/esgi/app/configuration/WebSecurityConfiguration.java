@@ -63,7 +63,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * Configuration principale du coeur d'application
      */
-    @Bean
+/*    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
 
@@ -83,6 +83,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/chat/api/**", corsConfiguration);
         return source;
     }
+
+ */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
