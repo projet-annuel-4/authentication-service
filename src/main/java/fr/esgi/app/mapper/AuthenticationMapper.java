@@ -29,6 +29,8 @@ public class AuthenticationMapper {
         response.setId(credentials.get("id"));
         response.setAccessToken(credentials.get("token"));
         response.setUserRole(credentials.get("userRole"));
+        response.setFirstName(credentials.get("firstName"));
+        response.setLastName(credentials.get("lastName"));
         return response;
     }
 

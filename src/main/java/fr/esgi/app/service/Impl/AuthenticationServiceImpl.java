@@ -67,6 +67,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             response.put("email", email);
             response.put("token", token);
             response.put("userRole", userRole);
+            response.put("id", user.getId().toString());
+            response.put("firstName", user.getFirstName());
+            response.put("lastName", user.getLastName());
             return response;
         } catch (AuthenticationException e) {
             throw new ApiRequestException("Incorrect password or email", HttpStatus.FORBIDDEN);
