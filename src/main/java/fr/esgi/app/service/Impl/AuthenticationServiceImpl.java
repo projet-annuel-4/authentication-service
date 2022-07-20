@@ -73,8 +73,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String registerUser(User user, String captcha, String password2) {
+        /*
         String url = String.format(captchaUrl, secret, captcha);
         restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponse.class);
+        */
 
         if (user.getPassword() != null && !user.getPassword().equals(password2)) {
             throw new PasswordException("Passwords do not match.");
