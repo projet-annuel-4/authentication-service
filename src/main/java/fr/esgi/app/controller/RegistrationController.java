@@ -22,7 +22,8 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             throw new InputFieldException(bindingResult);
         }
-        return ResponseEntity.ok(authenticationMapper.registerUser(user.getCaptcha(), user));
+        authenticationMapper.registerUser(user.getCaptcha(), user);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/activate/{code}")
