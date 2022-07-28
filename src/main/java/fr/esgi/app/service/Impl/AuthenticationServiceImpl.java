@@ -150,7 +150,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String template = "password-reset-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("firstName", user.getFirstName());
-        attributes.put("resetUrl", "http://" + hostname + "/reset/" + user.getPasswordResetCode());
+        attributes.put("resetUrl", "http://" + hostname + "/api/v1/auth/login/reset/" + user.getPasswordResetCode());
         mailSender.sendMessageHtml(user.getEmail(), subject, template, attributes);
         return "Reset password code is send to your E-mail";
     }
